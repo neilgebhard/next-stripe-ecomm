@@ -1,28 +1,8 @@
 import Head from 'next/head'
 
-const products = [
-  {
-    id: 'price_1LYPulCV5Wn3uhAp8iSNc2v2',
-    title: 'T-shirt',
-    description: 'White in color, high quality material, machine washable.',
-    image: '/images/tshirt.jpg',
-    price: 20.0,
-  },
-  {
-    id: 'price_1LYPulCV5Wn3uhAp8iSNc2v2',
-    title: 'T-shirt',
-    description: 'White in color, high quality material, machine washable.',
-    image: '/images/tshirt.jpg',
-    price: 20.0,
-  },
-  {
-    id: 'price_1LYPulCV5Wn3uhAp8iSNc2v2',
-    title: 'T-shirt',
-    description: 'White in color, high quality material, machine washable.',
-    image: '/images/tshirt.jpg',
-    price: 20.0,
-  },
-]
+import { initiateCheckout } from '../lib/payments'
+
+import products from '../products.json'
 
 export default function Home() {
   return (
@@ -49,6 +29,15 @@ export default function Home() {
                   <p>${price}</p>
                   <p>{description}</p>
                 </a>
+                <button
+                  onClick={() =>
+                    initiateCheckout({
+                      lineItems: [{ price: id, quantity: 1 }],
+                    })
+                  }
+                >
+                  Buy now
+                </button>
               </li>
             )
           })}

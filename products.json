@@ -1,0 +1,23 @@
+[
+  {
+    "id": "price_1LYPulCV5Wn3uhAp8iSNc2v2",
+    "title": "T-shirt",
+    "description": "White in color, high quality material, machine washable.",
+    "image": "/images/tshirt.jpg",
+    "price": 20.0
+  },
+  {
+    "id": "price_1LYPulCV5Wn3uhAp8iSNc2v2",
+    "title": "T-shirt",
+    "description": "White in color, high quality material, machine washable.",
+    "image": "/images/tshirt.jpg",
+    "price": 20.0
+  },
+  {
+    "id": "price_1LYPulCV5Wn3uhAp8iSNc2v2",
+    "title": "T-shirt",
+    "description": "White in color, high quality material, machine washable.",
+    "image": "/images/tshirt.jpg",
+    "price": 20.0
+  }
+]
