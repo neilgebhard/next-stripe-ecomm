@@ -1,10 +1,11 @@
 import Head from 'next/head'
-
-import { initiateCheckout } from '../lib/payments'
+import { useCart } from '../contexts/cart'
 
 import products from '../products.json'
 
 export default function Home() {
+  const { subtotal, quantity, totalItems, addToCart, checkout } = useCart()
+
   return (
     <div>
       <Head>
@@ -18,30 +19,35 @@ export default function Home() {
 
       <main>
         <h1>E-commerce (Next.js, Stripe)</h1>
-        <ul>
-          {products.map((product) => {
-            const { id, title, image, description, price } = product
-            return (
-              <li key={id}>
-                <a href='#'>
-                  <img src={image} alt={title} />
-                  <h3>{title}</h3>
-                  <p>${price}</p>
-                  <p>{description}</p>
-                </a>
-                <button
-                  onClick={() =>
-                    initiateCheckout({
-                      lineItems: [{ price: id, quantity: 1 }],
-                    })
-                  }
-                >
-                  Buy now
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        <section>
+          <div>
+            <strong>Items:</strong> {quantity}
+          </div>
+          <div>
+            <strong>Total:</strong> ${subtotal}
+          </div>
+          <button onClick={checkout}>Check Out</button>
+        </section>
+        <section>
+          <ul>
+            {products.map((product) => {
+              const { id, title, image, description, price } = product
+              return (
+                <li key={id}>
+                  <a href='#'>
+                    {/* <img src={image} alt={title} /> */}
+                    <h3>{title}</h3>
+                    <p>${price}</p>
+                    <p>{description}</p>
+                  </a>
+                  <button onClick={() => addToCart({ id, price })}>
+                    Add to cart
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
       </main>
     </div>
   )
