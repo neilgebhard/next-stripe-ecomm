@@ -1,58 +1,50 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { initiateCheckout } from '../lib/payments'
 
-const defaultCart = {
-  products: {},
-}
-
 const Context = createContext()
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(defaultCart)
+  const [cart, setCart] = useState([])
 
   useEffect(() => {
-    console.log(JSON.parse(localStorage.getItem('cart')))
-
     setCart(JSON.parse(localStorage.getItem('cart')))
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
+    if (cart.length > 0) {
+      localStorage.setItem('cart', JSON.stringify(cart))
+    }
   }, [cart])
 
-  const cartItems = Object.keys(cart.products).map((key) => {
-    return { ...cart.products[key] }
-  })
+  const subtotal = cart.reduce((acc, { price, quantity }) => {
+    return acc + price * quantity
+  }, 0)
 
-  const subtotal = cartItems.reduce(
-    (accumulator, { pricePerUnit, quantity }) => {
-      return accumulator + pricePerUnit * quantity
-    },
-    0
-  )
-
-  const quantity = cartItems.reduce((accumulator, { quantity }) => {
-    return accumulator + quantity
+  const quantity = cart.reduce((acc, { quantity }) => {
+    return acc + quantity
   }, 0)
 
   const addToCart = ({ id, price }) => {
     setCart((cart) => {
-      if (cart.products[id]) {
-        cart.products[id].quantity++
+      const item = cart.find((cart) => cart.id === id)
+
+      if (item) {
+        item.quantity++
       } else {
-        cart.products[id] = {
+        cart.push({
           id,
+          price,
           quantity: 1,
-          pricePerUnit: price,
-        }
+        })
       }
-      return { ...cart }
+
+      return [...cart]
     })
   }
 
   const checkout = () => {
     initiateCheckout({
-      lineItems: cartItems.map(({ id, quantity }) => {
+      lineItems: cart.map(({ id, quantity }) => {
         return {
           price: id,
           quantity,

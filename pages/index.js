@@ -1,10 +1,11 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useCart } from '../contexts/cart'
 
 import products from '../products.json'
 
 export default function Home() {
-  const { subtotal, quantity, totalItems, addToCart, checkout } = useCart()
+  const { subtotal, quantity, addToCart, checkout } = useCart()
 
   return (
     <div>
@@ -35,7 +36,7 @@ export default function Home() {
               return (
                 <li key={id}>
                   <a href='#'>
-                    {/* <img src={image} alt={title} /> */}
+                    <img src={image} alt={title} />
                     <h3>{title}</h3>
                     <p>${price}</p>
                     <p>{description}</p>
