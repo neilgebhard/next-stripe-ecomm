@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { initiateCheckout } from '../lib/payments'
+import { formatPrice } from '../lib'
 
 const Context = createContext()
 
@@ -7,7 +8,10 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
 
   useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem('cart')))
+    const cartData = JSON.parse(localStorage.getItem('cart'))
+    if (cartData) {
+      setCart(JSON.parse(localStorage.getItem('cart')))
+    }
   }, [])
 
   useEffect(() => {
@@ -16,15 +20,17 @@ export const CartProvider = ({ children }) => {
     }
   }, [cart])
 
-  const subtotal = cart.reduce((acc, { price, quantity }) => {
-    return acc + price * quantity
-  }, 0)
+  let subtotal = formatPrice(
+    cart.reduce((acc, { price, quantity }) => {
+      return acc + price * quantity
+    }, 0)
+  )
 
   const quantity = cart.reduce((acc, { quantity }) => {
     return acc + quantity
   }, 0)
 
-  const addToCart = ({ id, price }) => {
+  const addToCart = ({ id, price, image, title }) => {
     setCart((cart) => {
       const item = cart.find((cart) => cart.id === id)
 
@@ -34,6 +40,8 @@ export const CartProvider = ({ children }) => {
         cart.push({
           id,
           price,
+          image,
+          title,
           quantity: 1,
         })
       }
@@ -53,8 +61,17 @@ export const CartProvider = ({ children }) => {
     })
   }
 
+  const deleteFromCart = (id) => {
+    setCart((cart) => {
+      const newCart = cart.filter((item) => item.id !== id)
+      return newCart
+    })
+  }
+
   return (
-    <Context.Provider value={{ cart, subtotal, quantity, addToCart, checkout }}>
+    <Context.Provider
+      value={{ cart, subtotal, quantity, addToCart, deleteFromCart, checkout }}
+    >
       {children}
     </Context.Provider>
   )
