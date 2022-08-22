@@ -5,13 +5,13 @@ const Nav = () => {
   const { quantity, subtotal, checkout } = useCart()
 
   return (
-    <div className='navbar bg-base-100 px-4 py-2'>
+    <div className='navbar max-w-6xl mx-auto bg-base-100 px-4 py-2'>
       <div className='flex-1'>
         <Link href='/'>
           <a className='font-bold normal-case text-xl'>
             <span className='text-green-600'>Next</span>
             <span className='text-blue-600'>Stripe</span>
-            <span className='text-red-600'>E-comm</span>
+            <span className='text-red-600'>Store</span>
           </a>
         </Link>
       </div>
@@ -41,9 +41,13 @@ const Nav = () => {
             className='mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow'
           >
             <div className='card-body'>
-              <span className='font-bold text-lg'>{quantity} Items</span>
-              <span>Subtotal: {subtotal}</span>
-              <div className='card-actions'>
+              <span className='text-lg'>
+                <strong>{quantity}</strong> item{quantity > 1 ? 's' : ''}
+              </span>
+              <span>
+                Subtotal: <strong>{subtotal}</strong>
+              </span>
+              <div className='card-actions mt-3'>
                 <Link href='/cart'>
                   <a className='btn btn-primary btn-block'>View cart</a>
                 </Link>

@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
     return acc + quantity
   }, 0)
 
-  const addToCart = ({ id, price, image, title }) => {
+  const addToCart = ({ id, price, image, name }) => {
     setCart((cart) => {
       const item = cart.find((cart) => cart.id === id)
 
@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
           id,
           price,
           image,
-          title,
+          name,
           quantity: 1,
         })
       }
