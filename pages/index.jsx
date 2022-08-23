@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useCart } from '../contexts/cart'
 import Stripe from 'stripe'
 import { formatPrice } from '../lib'
+import Image from 'next/image'
 
 export const getStaticProps = async () => {
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
@@ -9,8 +10,6 @@ export const getStaticProps = async () => {
   const { data: products } = await stripe.products.list({
     expand: ['data.default_price'],
   })
-
-  console.log(products)
 
   return { props: { products } }
 }
@@ -41,8 +40,13 @@ export default function Home({ products }) {
                 <li key={id}>
                   <div className='card bg-base-100 shadow-xl border border-gray-100'>
                     <a className='p-4' href='#'>
-                      <figure>
-                        <img src={image} alt={name} />
+                      <figure className='relative h-64'>
+                        <Image
+                          src={image}
+                          alt={name}
+                          layout='fill'
+                          objectFit='cover'
+                        />
                       </figure>
                     </a>
                     <div className='card-body'>
@@ -52,7 +56,15 @@ export default function Home({ products }) {
                       <div className='card-actions mt-4'>
                         <button
                           className='btn btn-primary'
-                          onClick={() => addToCart({ id, price, image, name })}
+                          onClick={() =>
+                            addToCart({
+                              id,
+                              price,
+                              image,
+                              name,
+                              price_id: default_price.id,
+                            })
+                          }
                         >
                           Add To Cart
                         </button>

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useCart } from '../contexts/cart'
 import { formatPrice } from '../lib'
 
@@ -11,13 +12,20 @@ const Cart = () => {
         <div className='overflow-x-auto border-t border-t-gray-100'>
           <table className='table w-full'>
             <tbody className='divide-y'>
-              {cart.map(({ id, image, title, price, quantity }) => (
+              {cart.map(({ id, image, name, price, quantity }) => (
                 <tr key={id}>
                   <td>
-                    <img className='h-48' src={image} alt={title} />
+                    <div className='relative h-48 w-48'>
+                      <Image
+                        src={image}
+                        alt={name}
+                        layout='fill'
+                        objectFit='cover'
+                      />
+                    </div>
                   </td>
                   <td>
-                    <p className='font-semibold text-lg'>{title}</p>
+                    <p className='font-semibold text-lg'>{name}</p>
                     <p>Qty: {quantity}</p>
                     <p>
                       <button

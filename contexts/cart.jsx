@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) => {
     return acc + quantity
   }, 0)
 
-  const addToCart = ({ id, price, image, name }) => {
+  const addToCart = ({ id, price, image, name, price_id }) => {
     setCart((cart) => {
       const item = cart.find((cart) => cart.id === id)
 
@@ -42,6 +42,7 @@ export const CartProvider = ({ children }) => {
           price,
           image,
           name,
+          price_id,
           quantity: 1,
         })
       }
@@ -52,9 +53,9 @@ export const CartProvider = ({ children }) => {
 
   const checkout = () => {
     initiateCheckout({
-      lineItems: cart.map(({ id, quantity }) => {
+      lineItems: cart.map(({ price_id, quantity }) => {
         return {
-          price: id,
+          price: price_id,
           quantity,
         }
       }),
